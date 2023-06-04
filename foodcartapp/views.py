@@ -2,9 +2,13 @@ import json
 
 from django.http import JsonResponse
 from django.templatetags.static import static
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import viewsets, permissions, status
 
 
 from .models import Product, Order, OrderItem
+from .serializers import OrderSerializer
 
 
 def banners_list_api(request):
@@ -59,22 +63,16 @@ def product_list_api(request):
     })
 
 
+@api_view(['POST'])
 def register_order(request):
-    try:
-        data = json.loads(request.body.decode())
-        order = Order.objects.create(customer_name=data['firstname'], customer_surname=data['lastname'],
-                                     phone_number=data['phonenumber'], address=data['address'])
-        for product in data['products']:
-            OrderItem.objects.create(
-                order=order,
-                product=Product.objects.get(id=product['product']),
-                quantity=product['quantity']
-            )
-    except ValueError:
-        data = {
-            'error': 'bla bla bla',
-        }
-    return JsonResponse(data, safe=False, json_dumps_params={
-        'ensure_ascii': False,
-        'indent': 4,
-    })
+    order_data = request.data
+    order = Order.objects.create(customer_name=order_data['firstname'], customer_surname=order_data['lastname'],
+                                 phone_number=order_data['phonenumber'], address=order_data['address'])
+    for product in order_data['products']:
+        OrderItem.objects.create(
+            order=order,
+            product=Product.objects.get(id=product['product']),
+            quantity=product['quantity']
+        )
+
+    return Response(order_data)
