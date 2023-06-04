@@ -117,5 +117,5 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [
         OrderItemInline
     ]
-    search_fields = ['phone_number', 'customer_name', 'customer_surname']
-    list_display = ['customer_name', 'customer_surname', 'phone_number', 'address']
+    search_fields = ['phonenumber', 'firstname', 'lastname']
+    list_display = ['firstname', 'lastname', 'phonenumber', 'address']

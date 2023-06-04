@@ -126,15 +126,15 @@ class RestaurantMenuItem(models.Model):
 
 
 class Order(models.Model):
-    customer_name = models.CharField(
+    firstname = models.CharField(
         'Имя заказчика',
         max_length=20
     )
-    customer_surname = models.CharField(
+    lastname = models.CharField(
         'Фамилия заказчика',
         max_length=20
     )
-    phone_number = PhoneNumberField()
+    phonenumber = PhoneNumberField()
     address = models.CharField(
         'адрес',
         max_length=100,
@@ -146,7 +146,7 @@ class Order(models.Model):
         verbose_name_plural = 'заказы'
 
     def __str__(self):
-        return f"{self.customer_name} {self.customer_surname}"
+        return f"{self.firstname} {self.lastname}"
 
 
 class OrderItem(models.Model):

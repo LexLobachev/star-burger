@@ -2,9 +2,9 @@ import json
 
 from django.http import JsonResponse
 from django.templatetags.static import static
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import viewsets, permissions, status
 
 
 from .models import Product, Order, OrderItem
@@ -65,14 +65,24 @@ def product_list_api(request):
 
 @api_view(['POST'])
 def register_order(request):
-    order_data = request.data
-    order = Order.objects.create(customer_name=order_data['firstname'], customer_surname=order_data['lastname'],
-                                 phone_number=order_data['phonenumber'], address=order_data['address'])
-    for product in order_data['products']:
-        OrderItem.objects.create(
-            order=order,
-            product=Product.objects.get(id=product['product']),
-            quantity=product['quantity']
+    serializer = OrderSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    order = Order.objects.create(firstname=serializer.validated_data['firstname'],
+                                 lastname=serializer.validated_data['lastname'],
+                                 phonenumber=serializer.validated_data['phonenumber'],
+                                 address=serializer.validated_data['address'])
+    order_items_fields = serializer.validated_data['products']
+    if order_items_fields:
+        order_items = [OrderItem(order=order, **fields) for fields in order_items_fields]
+        OrderItem.objects.bulk_create(order_items)
+    else:
+        return Response(
+            {
+                "products": [
+                    "Этот список не может быть пустым"
+                ]
+            },
+            status=status.HTTP_400_BAD_REQUEST
         )
 
-    return Response(order_data)
+    return Response({'order_id': order.id})
