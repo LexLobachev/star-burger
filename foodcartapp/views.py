@@ -72,17 +72,7 @@ def register_order(request):
                                  phonenumber=serializer.validated_data['phonenumber'],
                                  address=serializer.validated_data['address'])
     order_items_fields = serializer.validated_data['products']
-    if order_items_fields:
-        order_items = [OrderItem(order=order, **fields) for fields in order_items_fields]
-        OrderItem.objects.bulk_create(order_items)
-    else:
-        return Response(
-            {
-                "products": [
-                    "Этот список не может быть пустым"
-                ]
-            },
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    order_items = [OrderItem(order=order, **fields) for fields in order_items_fields]
+    OrderItem.objects.bulk_create(order_items)
 
     return Response({'order_id': order.id})

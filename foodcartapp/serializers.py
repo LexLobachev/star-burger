@@ -9,7 +9,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    products = OrderItemSerializer(many=True)
+    products = OrderItemSerializer(many=True, allow_empty=False)
 
     class Meta:
         model = Order
