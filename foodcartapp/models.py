@@ -12,6 +12,12 @@ STATUS_CHOICES = (
     ('DONE', 'Выполнен'),
 )
 
+PAYMENT_CHOICES = (
+    ('CASH', 'Наличка'),
+    ('ONLINE', 'Онлайн'),
+    ('CARD', 'Картой'),
+)
+
 
 class Restaurant(models.Model):
     name = models.CharField(
@@ -165,6 +171,13 @@ class Order(models.Model):
     comment = models.TextField(
         'Комментарий к заказу',
         blank=True
+    )
+    payment = models.CharField(
+        'Способ оплаты',
+        max_length=20,
+        choices=PAYMENT_CHOICES,
+        default='CARD',
+        db_index=True
     )
 
     class Meta:
