@@ -5,7 +5,6 @@ from django.templatetags.static import static
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-
 from .models import Product, Order, OrderItem
 from .serializers import OrderSerializer
 
@@ -71,7 +70,11 @@ def register_order(request):
                                  phonenumber=serializer.validated_data['phonenumber'],
                                  address=serializer.validated_data['address'])
     order_items_fields = serializer.validated_data['products']
-    order_items = [OrderItem(order=order, **fields) for fields in order_items_fields]
+    # order_items = [OrderItem(order=order, **fields) for fields in order_items_fields]
+    # OrderItem.objects.bulk_create(order_items)
+
+    order_items = [OrderItem(order=order, price=fields.get('product').price * fields.get('quantity'), **fields)
+                   for fields in order_items_fields]
     OrderItem.objects.bulk_create(order_items)
 
     return Response(serializer.data)
