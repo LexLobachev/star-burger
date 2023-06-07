@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.templatetags.static import static
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.db import transaction
 
 from .models import Product, Order, OrderItem
 from .serializers import OrderSerializer
@@ -61,6 +62,7 @@ def product_list_api(request):
     })
 
 
+@transaction.atomic
 @api_view(['POST'])
 def register_order(request):
     serializer = OrderSerializer(data=request.data)
@@ -70,9 +72,6 @@ def register_order(request):
                                  phonenumber=serializer.validated_data['phonenumber'],
                                  address=serializer.validated_data['address'])
     order_items_fields = serializer.validated_data['products']
-    # order_items = [OrderItem(order=order, **fields) for fields in order_items_fields]
-    # OrderItem.objects.bulk_create(order_items)
-
     order_items = [OrderItem(order=order, price=fields.get('product').price * fields.get('quantity'), **fields)
                    for fields in order_items_fields]
     OrderItem.objects.bulk_create(order_items)
