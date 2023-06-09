@@ -35,6 +35,16 @@
         <td>{{ item.address }}</td>
         <td>{{ item.comment }}</td>
         <td>
+          <details>
+              <summary>Из ресторана</summary>
+              <ul>
+              {% for restaurant in item.order_restaurants %}
+                <li>{{ restaurant }}</li>
+              {% endfor %}
+              </ul>
+          </details>
+        </td>
+        <td>
           <a href="{% url 'admin:foodcartapp_order_change' item.id %}?next={{ request.get_full_path|urlencode }}">Редактировать</a>
         </td>
       </tr>

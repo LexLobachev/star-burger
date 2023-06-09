@@ -144,6 +144,9 @@ class OrderQuerySet(models.QuerySet):
     def get_order_cost(self):
         return self.annotate(order_cost=Sum('items__price'))
 
+    def get_order_restaurants(self):
+        return self.annotate(order_restaurants=[])
+
 
 class Order(models.Model):
     firstname = models.CharField(
