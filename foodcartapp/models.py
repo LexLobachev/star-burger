@@ -183,6 +183,14 @@ class Order(models.Model):
         db_index=True
     )
 
+    def order_restaurants(self):
+        order_items = self.items.all()
+        restaurant_items = set()
+        for order_item in order_items:
+            restaurant_items.update(order_item.product.menu_items.filter(availability=True))
+
+        return {order_item.restaurant for order_item in restaurant_items}
+
     class Meta:
         verbose_name = 'заказ'
         verbose_name_plural = 'заказы'

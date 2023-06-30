@@ -21,6 +21,7 @@
       <th>Телефон</th>
       <th>Адрес доставки</th>
       <th>Комментарий</th>
+      <th>Рестораны</th>
       <th>Ссылка на админку</th>
     </tr>
 
@@ -36,7 +37,7 @@
         <td>{{ item.comment }}</td>
         <td>
           <details>
-              <summary>Из ресторана</summary>
+              <summary>Может быть приготовлен ресторанами:</summary>
               <ul>
               {% for restaurant in item.order_restaurants %}
                 <li>{{ restaurant }}</li>
