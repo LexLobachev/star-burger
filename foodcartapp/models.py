@@ -1,9 +1,10 @@
+from functools import reduce
+
 from django.db import models
 from django.db.models import Sum, F, DecimalField
 from django.core.validators import MinValueValidator
 
 from phonenumber_field.modelfields import PhoneNumberField
-
 
 STATUS_CHOICES = (
     ('UNPROCESSED', 'Не обработан'),
@@ -47,8 +48,8 @@ class ProductQuerySet(models.QuerySet):
     def available(self):
         products = (
             RestaurantMenuItem.objects
-            .filter(availability=True)
-            .values_list('product')
+                .filter(availability=True)
+                .values_list('product')
         )
         return self.filter(pk__in=products)
 
@@ -145,7 +146,15 @@ class OrderQuerySet(models.QuerySet):
         return self.annotate(order_cost=Sum('items__price'))
 
     def get_order_restaurants(self):
-        return self.annotate(order_restaurants=[])
+        restaurant_menu_product = RestaurantMenuItem.objects.select_related('product', 'restaurant')
+        for order in self:
+            restaurants_products = []
+            for order_product in order.items.all():
+                restaurants_products.append([restaurant_item.restaurant for restaurant_item in restaurant_menu_product
+                                             if order_product.product_id == restaurant_item.product.id])
+            available_restaurant = reduce(set.intersection, map(set, restaurants_products))
+            order.available_restaurant = available_restaurant
+        return self
 
 
 class Order(models.Model):
@@ -182,14 +191,6 @@ class Order(models.Model):
         default='CARD',
         db_index=True
     )
-
-    def order_restaurants(self):
-        order_items = self.items.all()
-        restaurant_items = set()
-        for order_item in order_items:
-            restaurant_items.update(order_item.product.menu_items.filter(availability=True))
-
-        return {order_item.restaurant for order_item in restaurant_items}
 
     class Meta:
         verbose_name = 'заказ'

@@ -38,11 +38,11 @@
         <td>
           <details>
               <summary>Может быть приготовлен ресторанами:</summary>
-              <ul>
-              {% for restaurant in item.order_restaurants %}
-                <li>{{ restaurant }}</li>
-              {% endfor %}
-              </ul>
+                <ul>
+                  {% for restaurant in item.available_restaurant %}
+                    <li>{{ restaurant }}</li>
+                  {% endfor %}
+                </ul>
           </details>
         </td>
         <td>
