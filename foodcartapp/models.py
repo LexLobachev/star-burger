@@ -153,6 +153,7 @@ class OrderQuerySet(models.QuerySet):
                 restaurants_products.append([restaurant_item.restaurant for restaurant_item in restaurant_menu_product
                                              if order_product.product_id == restaurant_item.product.id])
             available_restaurant = reduce(set.intersection, map(set, restaurants_products))
+            available_restaurant.distance = 10
             order.available_restaurant = available_restaurant
         return self
 
