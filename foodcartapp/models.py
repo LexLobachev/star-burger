@@ -1,5 +1,6 @@
-from functools import reduce
+from .utils import get_distance, fetch_coordinates
 
+from functools import reduce
 from django.db import models
 from django.db.models import Sum, F, DecimalField
 from django.core.validators import MinValueValidator
@@ -152,9 +153,10 @@ class OrderQuerySet(models.QuerySet):
             for order_product in order.items.all():
                 restaurants_products.append([restaurant_item.restaurant for restaurant_item in restaurant_menu_product
                                              if order_product.product_id == restaurant_item.product.id])
-            available_restaurant = reduce(set.intersection, map(set, restaurants_products))
-            available_restaurant.distance = 10
-            order.available_restaurant = available_restaurant
+            available_restaurants = reduce(set.intersection, map(set, restaurants_products))
+            for restaurant in available_restaurants:
+                restaurant.distance = get_distance(fetch_coordinates(order.address), fetch_coordinates(restaurant.address))
+            order.available_restaurant = available_restaurants
         return self
 
 
