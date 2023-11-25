@@ -23,5 +23,10 @@ def fetch_coordinates(address, apikey=YANDEX_API_KEY):
 
 
 def get_distance(from_where, to_where):
-    distance = dstnc.distance(from_where, to_where).km
+    try:
+        fetched_from_where = fetch_coordinates(from_where)
+        fetched_to_where = fetch_coordinates(to_where)
+    except requests.exceptions:
+        return 0
+    distance = dstnc.distance(fetched_from_where, fetched_to_where).km
     return round(distance)

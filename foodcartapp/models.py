@@ -155,7 +155,7 @@ class OrderQuerySet(models.QuerySet):
                                              if order_product.product_id == restaurant_item.product.id])
             available_restaurants = reduce(set.intersection, map(set, restaurants_products))
             for restaurant in available_restaurants:
-                restaurant.distance = get_distance(fetch_coordinates(order.address), fetch_coordinates(restaurant.address))
+                restaurant.distance = get_distance(order.address, restaurant.address)
             order.available_restaurant = available_restaurants
         return self
 
