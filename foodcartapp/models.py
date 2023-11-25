@@ -3,7 +3,7 @@ from .utils import get_distance, fetch_coordinates
 from functools import reduce
 from django.db import models
 from django.db.models import Sum, F, DecimalField
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -217,7 +217,12 @@ class OrderItem(models.Model):
         on_delete=models.CASCADE,
     )
     quantity = models.IntegerField(
-        'количество'
+        'количество',
+        default=1,
+        validators=[
+            MaxValueValidator(10),
+            MinValueValidator(1)
+        ]
     )
     price = models.DecimalField(
         'цена позиции',
