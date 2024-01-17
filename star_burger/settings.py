@@ -14,6 +14,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 YANDEX_API_KEY = env('YANDEX_API_KEY')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', False)
+ROLLBAR_ACCESS_TOKEN = env('ROLLBAR_ACCESS_TOKEN')
+ROLLBAR_ENV_NAME = env('ROLLBAR_ENV_NAME')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
 
@@ -41,9 +43,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
 ROOT_URLCONF = 'star_burger.urls'
+
+ROLLBAR = {
+    'access_token': ROLLBAR_ACCESS_TOKEN,
+    'environment': ROLLBAR_ENV_NAME,
+    'code_version': '1.0',
+    'root': BASE_DIR,
+}
 
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',

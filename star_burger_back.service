@@ -1,0 +1,11 @@
+[Unit]
+Description=StarDurger Backend  daemon
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/star-burger
+ExecStart=/opt/star-burger/venv/bin/python3 -m gunicorn -w 5 -b 80.249.146.72:8080 star_burger.wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
