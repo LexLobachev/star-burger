@@ -37,7 +37,7 @@ python --version
 ```
 **Важно!** Версия Python должна быть не ниже 3.6.
 
-Возможно, вместо команды `python` здесь и в остальных инструкциях этого README придётся использовать `python3`. Зависит это от операционной системы и от того, установлен ли у вас Python старой второй версии. 
+Возможно, вместо команды `python` здесь и в остальных инструкциях этого README придётся использовать `python3`. Зависит это от операционной системы и от того, установлен ли у вас Python старой второй версии.
 
 В каталоге проекта создайте виртуальное окружение:
 ```sh
@@ -57,9 +57,18 @@ pip install -r requirements.txt
 Определите переменную окружения `SECRET_KEY`. Создать файл `.env` в каталоге `star_burger/` и положите туда такой код:
 ```sh
 SECRET_KEY=django-insecure-0if40nf4nf93n4
+YANDEX_API_KEY=<your_yandex_key>
+ALLOWED_HOSTS=<hosts_that_you_allow>
+DEBUG=False
+ROLLBAR_ACCESS_TOKEN=<your_rollbar_token>
+ROLLBAR_ENV_NAME=production
+POSTGRES_DB_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
 ```
+`YANDEX_API_KEY` - ключ к API [Яндекс Геокодера](https://yandex.ru/dev/maps/geocoder/). Можно заполнить любой строкой, но в это случае не будет рассчитываться расстояние между адресами заказа и ресторанами
+`ROLLBAR_ACCESS_TOKEN` - ключ для отловки ошибок с помощью сервиса [Rollbar](https://app.rollbar.com/)
+`POSTGRES_DB_URL` - урл для подключения к бд постгреса
 
-Создайте файл базы данных SQLite и отмигрируйте её следующей командой:
+Oтмигрируйте базу данных следующей командой:
 
 ```sh
 python manage.py migrate
@@ -147,6 +156,9 @@ Parcel будет следить за файлами в каталоге `bundle
 - `DEBUG` — дебаг-режим. Поставьте `False`.
 - `SECRET_KEY` — секретный ключ проекта. Он отвечает за шифрование на сайте. Например, им зашифрованы все пароли на вашем сайте.
 - `ALLOWED_HOSTS` — [см. документацию Django](https://docs.djangoproject.com/en/3.1/ref/settings/#allowed-hosts)
+- `YANDEX_API_KEY` - ключ к API [Яндекс Геокодера](https://yandex.ru/dev/maps/geocoder/). Можно заполнить любой строкой, но в это случае не будет рассчитываться расстояние между адресами заказа и ресторанами
+- `ROLLBAR_ACCESS_TOKEN` - ключ для отловки ошибок с помощью сервиса [Rollbar](https://app.rollbar.com/)
+- `POSTGRES_DB_URL` - урл для подключения к бд постгреса
 
 ## Цели проекта
 
