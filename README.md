@@ -64,6 +64,7 @@ ROLLBAR_ACCESS_TOKEN=<your_rollbar_token>
 ROLLBAR_ENV_NAME=production
 POSTGRES_DB_URL=postgres://USER:PASSWORD@HOST:PORT/NAME
 ```
+`ROLLBAR_ENV_NAME` - необязательная переменная окружения
 `YANDEX_API_KEY` - ключ к API [Яндекс Геокодера](https://yandex.ru/dev/maps/geocoder/). Можно заполнить любой строкой, но в это случае не будет рассчитываться расстояние между адресами заказа и ресторанами
 `ROLLBAR_ACCESS_TOKEN` - ключ для отловки ошибок с помощью сервиса [Rollbar](https://app.rollbar.com/)
 `POSTGRES_DB_URL` - урл для подключения к бд постгреса

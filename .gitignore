@@ -3,6 +3,7 @@ node_modules/
 media/
 staticfiles/
 
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
