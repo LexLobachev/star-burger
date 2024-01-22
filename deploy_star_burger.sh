@@ -6,7 +6,7 @@ cd /opt/star-burger/
 git pull origin master
 echo "git is pulled"
 
-npm ci --dev
+npm ci
 echo "frontend libraries are ready"
 ./venv/bin/pip3 install -r requirements.txt
 echo "backend libraries are ready"
