@@ -1,5 +1,6 @@
 [Unit]
 Description=StarDurger Backend  daemon
+Requires=postgresql.service
 
 [Service]
 Type=simple
