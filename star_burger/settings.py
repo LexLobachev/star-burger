@@ -15,7 +15,7 @@ YANDEX_API_KEY = env('YANDEX_API_KEY')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', False)
 ROLLBAR_ACCESS_TOKEN = env('ROLLBAR_ACCESS_TOKEN', 'default_token')
-ROLLBAR_ENV_NAME = env('ROLLBAR_ENV_NAME', 'development')
+ROLLBAR_ENV_NAME = env('ROLLBAR_ENV_NAME', '')
 POSTGRES_DB_URL = env.str('POSTGRES_DB_URL')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1', 'localhost'])
