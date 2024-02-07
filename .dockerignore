@@ -1,0 +1,10 @@
+.DS_Store
+venv
+.env
+__pycache__
+.gitignore
+.idea
+README
+Dockerfile.back
+Dockerfile.front
+docker-compose.yml
