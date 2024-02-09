@@ -3,12 +3,18 @@ services:
   front:
     container_name: starburger-frontend
     build:
+      context: .
       dockerfile: ./frontend/Dockerfile
+    volumes:
+      - /opt/star-burger/staticfiles/:/star-burger/staticfiles/
   back:
     container_name: starburger-backend
     build:
       context: .
       dockerfile: ./backend/Dockerfile
+    volumes:
+      - /opt/star-burger/media/:/star-burger/media/
+      - /opt/star-burger/staticfiles/:/star-burger/staticfiles/
     command: >
       bash -c "gunicorn -w 5 -b 0.0.0.0:8080 star_burger.wsgi:application"
     ports:
