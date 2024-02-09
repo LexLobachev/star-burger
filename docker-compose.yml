@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 services:
   front:
     container_name: starburger-frontend
@@ -16,7 +16,6 @@ services:
       - 8080
     env_file: ./.env
     depends_on:
-      - nginx
       - front
     volumes:
       - ./frontend:/usr/src/app/frontend:/opt/star-burger/frontend
