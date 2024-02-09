@@ -2,20 +2,18 @@ version: '3'
 services:
   front:
     container_name: starburger-frontend
-    volumes:
-      - /opt/star-burger/staticfiles/:/star-burger/staticfiles/
     build:
       dockerfile: ./frontend/Dockerfile
   back:
     container_name: starburger-backend
     build:
+      context: .
       dockerfile: ./backend/Dockerfile
     command: >
       bash -c "gunicorn -w 5 -b 0.0.0.0:8080 star_burger.wsgi:application"
     ports:
-      - 8080
-    env_file: ./.env
+      - "8080:8080"
+    env_file:
+      - .env
     depends_on:
       - front
-    volumes:
-      - ./frontend:/usr/src/app/frontend:/opt/star-burger/frontend
